@@ -255,6 +255,10 @@ export default class CSSAnimate extends Component {
 
 
   onAnimationEnd(e) {
+
+    console.log(this.refs.element.__proto__)
+
+
     const element = ReactDOM.findDOMNode(this.refs.element);
     var cb;
 

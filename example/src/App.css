@@ -5,27 +5,113 @@
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+  height: 60px;
 }
 
 .App-header {
   position: relative;
   background-color: #222;
-  height: 220px;
-  padding: 20px;
-  color: white
 
+  // height: 300px;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  padding-left: 2%;
+  padding-right: 2%;
+  color: white;
+  /*font-family: 'lane_-_narrowregular';
+  font-size: 4rem;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin: 0 0 1rem;
+  padding: 0;*/
 }
 
+.App-header h2 {
+  font-family: 'lane_-_narrowregular';
+  font-size: 4rem;
+  font-size: 4vw;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin: 0;
+  margin-top: 2%;
+  margin-bottom: 4%;
+  padding: 0;
+}
+
+.App-header h2 .small {
+  font-weight: 300;
+  text-transform: lowercase;
+}
+
+.App-header h2 .bold {
+  font-size: 6rem;
+  font-size: 6vw;
+  font-weight: 400;
+  letter-spacing: -1px;
+}
+
+.claim {
+  font-size: 1.2rem;
+  margin: 0;
+  padding-bottom: 10%;
+  padding-top: .5rem;
+}
 
 @keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
+
+button {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  line-height: auto;
+  margin: 0;
+  overflow: visible;
+  padding: 0;
+  width: auto;
+}
+
+button:focus {
+  outline: 0;
+}
+button:active {
+  outline: 0;
+}
+
+
+button {
+  // background-color: #61DAFA;
+  color: white;
+  // border: 2px solid #61DAFA;
+  border: 1px solid #ffffff;
+  padding: 12px;
+
+  border-radius: 4px;
+  padding-left: 16px;
+  padding-right: 16px;
+  font-size: 18px;
+
+  transform: none;
+  // font-weight: bold;
+}
+
+button + button{
+  margin-left: 1em;
+}
 
 
 .page {
+  position: relative;
   pointer-events: none;
   user-select: none;
   padding: 2%;
@@ -33,85 +119,150 @@
 }
 
 .page h1 {
-  margin-top: 0;
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateY(-50%) translateX(-50%);
 }
 
-
-.page-1{
-  background-color: #61DAFB;
+.page-1 {
+  // background-color: #61DAFA;
+  // background-color: #67C3F0;
+  background-color: #61DAFA;
+  border-top: solid 4px #FC7C7F;
 }
 
-.page-2{
+.page-2 {
+  // background-color: #AFEEFF;
+  // background-color: #FC7C7F;
   background-color: #e26a6a;
+  border-top: solid 4px #61DAFA;
+}
+
+.page-3 {
+  // background-color: #63DEFF;
+  // background-color: #FFCC75;
+  background-color: #61DAFA;
+  border-top: solid 4px #e26a6a;
+}
+
+.page-4 {
+  // background-color: #58777F;
+  // background-color: #61C9BB;
+  background-color: #e26a6a;
+  border-top: solid 4px #61DAFA;
+}
+
+.page-5 {
+  // background-color: #4FB2CC;
+  background-color: #0F0F0F;
+  border-top: solid 4px #61DAFA;
+  color: white;
 }
 
 .main-content {
- height: calc(100% - 220px);
+  position: relative;
+  height: 60%;
+  height: calc(100% - 220px);
 }
 
 .right {
   float: right;
 }
 
-
 .controls {
+  position: relative;
   display: block;
   width: 100%;
   text-align: center;
 }
 
 .controls::before,
- .controls::after {
-   content: " ";
-   display: table;
- }
- .controls::after {
-   clear: both;
- }
+.controls::after {
+  content: " ";
+  display: table;
+}
 
-.controls > button {
-  font-size: 14px;
+.controls::after {
+  clear: both;
+}
+
+.buttons {
+  display: inline;
+  top: -20px;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
 }
 
- label {
+label {
   margin-right: 0.5em;
- }
+}
 
- select {
-
+select {
   font-size: 14px;
   margin-right: 1.5em;
- }
+}
 
 
-@media all and (max-width: 600px){
+
+
+
+@media all and (max-width: 1460px) {
+
+  .App-header h2 {
+    margin-bottom: 1rem;
+  }
+  .buttons {
+    display: block;
+    top: 0;
+    position: static;
+    left: 0;
+    transform: none;
+  }
+
+  .right {
+    margin-top: 2rem;
+    float: none;
+    display: block;
+  }
+}
+
+@media all and (max-width: 600px) {
   .App-header img {
     max-width: 50px;
   }
-
   .App-logo {
     height: 40px;
   }
-
   .App-header h2 {
     font-size: 1.1rem;
     margin-top: 0;
   }
-
   .controls {
     padding-top: 10px;
   }
-
   .controls > button {
     bottom: 10px;
   }
-
-  select{
+  select {
     margin-bottom: 1rem;
   }
+}
 
 
+@media all and (min-width: 1280px) {
+  .App-header h2 {
+    font-size: 4rem;
+    margin-top: 1%;
+    margin-bottom: 2.5%;
+  }
+  .App-header h2 .bold {
+    font-size: 6rem;
+  }
+
+  .App-header {
+    padding-top: 1.2%;
+    padding-bottom: 1.5%;
+  }
 }

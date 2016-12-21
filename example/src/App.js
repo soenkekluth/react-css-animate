@@ -3,11 +3,13 @@ import logo from './logo.svg';
 
 import Main from './Main';
 import Select from './Select';
-import PageTwo from './PageTwo';
+import Page from './Page';
 import PageOne from './PageOne';
 
 import 'animate.css';
 
+const pages = ['page-1', 'page-2', 'page-3', 'page-4', 'page-5'];
+var pagesIterator = 0;
 
 import './App.css';
 class App extends Component {
@@ -16,14 +18,30 @@ class App extends Component {
     super(props, context)
 
     this.state = {
-      pageName: 'page-1',
+      pageName: pages[pagesIterator],
       animateEnterClass: 'rotateInUpRight',
       animateLeaveClass: 'hinge'
     }
   }
 
-  changePage() {
-    var pageName = this.state.pageName === 'page-1' ? 'page-2' : 'page-1';
+  onNextPage() {
+    ++pagesIterator;
+    if(pagesIterator > pages.length-1){
+      pagesIterator = 0;
+    }
+    var pageName = pages[pagesIterator];
+    this.setState({
+      pageName: pageName
+    })
+
+  }
+
+  onPrevPage() {
+    --pagesIterator;
+    if(pagesIterator < 0){
+      pagesIterator = pages.length-1;
+    }
+    var pageName = pages[pagesIterator];
     this.setState({
       pageName: pageName
     })
@@ -45,17 +63,39 @@ class App extends Component {
 
   render() {
 
-    const page = this.state.pageName === 'page-1' ? <PageOne /> : <PageTwo />;
+
+    let page = null;
+    const pageName = this.state.pageName.split('-')[1];
+
+    switch (this.state.pageName) {
+      case 'page-1':
+      case 'page-2':
+      case 'page-4':
+      case 'page-5':
+        page = (<Page className={this.state.pageName}><h1>{pageName}</h1></Page>);
+        break;
+      case 'page-3':
+        page = (<div className="page page-3" >
+                        <h1>3</h1>
+                      </div>)
+        break;
+        default: break;
+    }
+
+    // const page = this.state.pageName === 'page-1' ? <PageOne /> : <PageTwo />;
 
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>React CSSAnimate</h2>
+          <h2><span className="small">React</span> <span className="bold">CSSAnimate</span></h2>
 
 
           <div className="controls">
-          <button onClick={this.changePage.bind(this)}>change page</button>
+          <div className="buttons">
+          <button onClick={this.onPrevPage.bind(this)}>prev Page</button>
+          <button onClick={this.onNextPage.bind(this)}>next Page</button>
+          </div>
 
           <div className="right">
           <label htmlFor="animateEnter">Page enter</label>
