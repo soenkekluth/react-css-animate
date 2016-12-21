@@ -1,0 +1,19 @@
+# OS or Editor folders
+.DS_Store
+*.sublime-workspace
+npm-debug.log
+
+# Project folders to ignore
+node_modules
+.tern-port
+*.map
+/TODO
+/videos
+/examples
+/lib
+/tmp
+yarn.lock
+.babelrc-env
+.babelrc-env2
+.babelrc-old
+.yarnclean
