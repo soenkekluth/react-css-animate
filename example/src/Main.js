@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import {CSSAnimateGroup} from 'react-css-animate';
-import {easeOutExpo} from 'react-css-animate/css-easing';
+import CSSAnimateGroup from '../lib/css-animate-group';
+import {easeOutExpo} from '../lib/css-easing';
 
 
 export default class Main extends Component {

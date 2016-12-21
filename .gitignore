@@ -17,3 +17,4 @@ yarn.lock
 .babelrc-env2
 .babelrc-old
 .yarnclean
+lib

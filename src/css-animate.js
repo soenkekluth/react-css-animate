@@ -30,6 +30,8 @@ export default class CSSAnimate extends Component {
 
     animateEnterClass: React.PropTypes.string,
     animateLeaveClass: React.PropTypes.string,
+    animateEnterEndClass: React.PropTypes.string,
+    animateLeaveEndClass: React.PropTypes.string,
 
     animateEnterDelay: React.PropTypes.string,
     animateLeaveDelay: React.PropTypes.string,
@@ -68,9 +70,6 @@ export default class CSSAnimate extends Component {
   constructor(props, context) {
     super(props, context);
 
-    this.animateEnterPromise = null;
-    this.animateLeavePromise = null;
-
     this.animateEnter = this.animateEnter.bind(this);
     this.animateLeave = this.animateLeave.bind(this);
 
@@ -78,22 +77,20 @@ export default class CSSAnimate extends Component {
     this.onAnimationEnd = this.onAnimationEnd.bind(this);
 
     this.state = {
-      animateEnterComplete: false,
-      animateLeaveComplete: false,
+      animateEnterEnd: false,
+      animateLeaveEnd: false,
       animateEnter: props.animateEnter,
       animateLeave: props.animateLeave,
       height: null
     };
-
   }
-
 
   animateEnter() {
     const element = ReactDOM.findDOMNode(this.refs.element);
     var height = element ? element.scrollHeight : 0;
 
     this.setState({
-      animateEnterComplete: false,
+      animateEnterEnd: false,
       animateEnter: true,
       height: height,
       animateLeave: false
@@ -102,24 +99,22 @@ export default class CSSAnimate extends Component {
 
   animateLeave() {
     this.setState({
-      animateLeaveComplete: false,
+      animateLeaveEnd: false,
       animateLeave: true,
       animateEnter: false,
       height: 0
     });
   }
 
-
-
   componentWillUpdate(nextProps, nextState) {
     const element = ReactDOM.findDOMNode(this.refs.element);
     if (nextProps.animateLeave && !this.props.animateLeave && !this.state.animateLeave) {
-      nextState.animateLeaveComplete = false;
+      nextState.animateLeaveEnd = false;
       nextState.animateLeave = true;
       nextState.animateEnter = false;
       nextState.height = 0;
     } else if (nextProps.animateEnter && !this.props.animateEnter && !this.state.animateEnter) {
-      nextState.animateEnterComplete = false;
+      nextState.animateEnterEnd = false;
       nextState.animateEnter = true;
       if (element) {
         nextState.height = element.scrollHeight;
@@ -127,7 +122,6 @@ export default class CSSAnimate extends Component {
       nextState.animateLeave = false;
     }
   }
-
 
   addListener() {
     if (!this.hasListener) {
@@ -141,41 +135,38 @@ export default class CSSAnimate extends Component {
   }
 
   componentWillMount() {
-   AnimationUtils.init();
+    AnimationUtils.init();
   }
 
   componentDidMount() {
+
     AnimationUtils.init();
     this.addListener();
   }
 
   componentWillUnmount() {
     const element = ReactDOM.findDOMNode(this.refs.element);
-    if(element){
-
+    if (element) {
       AnimationUtils.offAnimationEnd(element, this.onAnimationEnd);
       AnimationUtils.offAnimationStart(element, this.onAnimationStart);
     }
   }
 
   render() {
-
-
     const animating = this.state.animateEnter || this.state.animateLeave;
 
-    if (this.props.remove && !animating && this.state.animateLeaveComplete) {
+    if (this.props.remove && !animating && this.state.animateLeaveEnd) {
       return null;
     }
 
     let { className, ...props } = this.props;
     let animationClass = null;
+    let animationEndClass = null;
     let style = {};
 
-    if (this.props.animateEnterClass === 'slideDown' /*&& animating || this.state.animateLeaveComplete*/ ) {
+    if (this.props.animateEnterClass === 'slideDown' /*&& animating || this.state.animateLeaveEnd*/ ) {
       style.maxHeight = this.state.height
     }
-
-
 
     if (animating) {
 
@@ -197,7 +188,7 @@ export default class CSSAnimate extends Component {
           style.animationTimingFunction = this.props.animateEnterTiming;
         }
       } else {
-        if(this.props.keepLeavePosition){
+        if (this.props.keepLeavePosition) {
           style.position = 'absolute';
           style.width = '100%';
           style.top = '0';
@@ -216,12 +207,20 @@ export default class CSSAnimate extends Component {
       }
 
       style = AnimationUtils.prefix(style);
+    }else{
+      if(this.props.animateEnterEndClass || this.props.animateLeaveEndClass){
+        animationEndClass = classNames({
+          [this.props.animateEnterEndClass]: this.state.animateEnterEnd,
+          [this.props.animateLeaveEndClass]: this.state.animateLeaveEnd
+        })
+      }
+
     }
 
-    var  visibleClass = (!animating && this.state.animateLeaveComplete && this.props.hide) ? 'is-hidden' : null;
-    visibleClass = (animating || this.state.animateEnterComplete) ? 'is-showing' : visibleClass;
+    var visibleClass = (!animating && this.state.animateLeaveEnd && this.props.hide) ? 'is-hidden' : null;
+    visibleClass = (animating || this.state.animateEnterEnd) ? 'is-showing' : visibleClass;
 
-    className = classNames('css-animation', className, animationClass, visibleClass);
+    className = classNames('css-animation', className, animationClass, animationEndClass, visibleClass);
 
     let element = React.Children.only(this.props.children);
 
@@ -272,12 +271,12 @@ export default class CSSAnimate extends Component {
 
       if (e.animationName === this.props.animateEnterClass) {
         cb = this.props.onAnimateEnterEnd;
-        state.animateLeaveComplete = false;
-        state.animateEnterComplete = true;
+        state.animateLeaveEnd = false;
+        state.animateEnterEnd = true;
       } else if (e.animationName === this.props.animateLeaveClass) {
         cb = this.props.onAnimateLeaveEnd;
-        state.animateLeaveComplete = true;
-        state.animateEnterComplete = false;
+        state.animateLeaveEnd = true;
+        state.animateEnterEnd = false;
       }
 
 
