@@ -1,7 +1,11 @@
 {
-  "main.css": "static/css/main.8f377c08.css",
-  "main.css.map": "static/css/main.8f377c08.css.map",
-  "main.js": "static/js/main.6e453be1.js",
-  "main.js.map": "static/js/main.6e453be1.js.map",
+  "main.css": "static/css/main.aed810b5.css",
+  "main.css.map": "static/css/main.aed810b5.css.map",
+  "main.js": "static/js/main.33b0e7e2.js",
+  "main.js.map": "static/js/main.33b0e7e2.js.map",
+  "static/media/LANENAR_-webfont.eot": "static/media/LANENAR_-webfont.8a037704.eot",
+  "static/media/LANENAR_-webfont.svg": "static/media/LANENAR_-webfont.d005d39a.svg",
+  "static/media/LANENAR_-webfont.ttf": "static/media/LANENAR_-webfont.2b0d1b25.ttf",
+  "static/media/LANENAR_-webfont.woff": "static/media/LANENAR_-webfont.e75b5b3d.woff",
   "static/media/logo.svg": "static/media/logo.5d5d9eef.svg"
 }
