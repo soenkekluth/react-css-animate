@@ -1,0 +1,40 @@
+.banderole {
+  display: inline-block;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
+  transform-origin: center;
+  z-index: 9999;
+
+}
+
+.banderole.forkongithub {
+  right : 0;
+  transform: translateX(20%) translateY(115%) rotate(45deg);
+}
+
+.banderole.pullfromdocker {
+  left : 0;
+  transform: translateX(-20%) translateY(110%) rotate(-45deg);
+}
+
+
+.banderole a {
+  background: #61DAFA;
+  color: #ffffff;
+  display: block;
+  font-family: sans-serif;
+  font-size: 1rem;
+  font-weight: 300;
+  line-height: 2.5rem;
+  padding: 0 40px;
+  text-align: center;
+  text-decoration: none;
+  transition: background .5s;
+  width: 230px;
+
+}
+
+.banderole a:hover {
+  background: #31343c;
+}

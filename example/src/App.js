@@ -7,6 +7,7 @@ import Page from './Page';
 import PageOne from './PageOne';
 
 import 'animate.css';
+import './Banderole.css';
 
 const pages = ['page-1', 'page-2', 'page-3', 'page-4', 'page-5'];
 var pagesIterator = 0;
@@ -105,6 +106,10 @@ class App extends Component {
           <Select value={this.state.animateLeaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
           </div>
           </div>
+
+          <span className="banderole forkongithub">
+            <a href="https://github.com/soenkekluth/react-css-animate">Fork me on GitHub</a>
+          </span>
         </div>
 
 
