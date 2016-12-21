@@ -5,6 +5,7 @@
   "devDependencies": {
     "react-scripts": "0.8.4"
   },
+  "homepage": "./",
   "dependencies": {
     "animate.css": "^3.5.2",
     "classnames": "^2.2.5",

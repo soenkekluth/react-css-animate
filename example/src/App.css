@@ -9,6 +9,7 @@
 }
 
 .App-header {
+  position: relative;
   background-color: #222;
   height: 220px;
   padding: 20px;
@@ -80,3 +81,33 @@
  select {
   margin-right: 1.5em;
  }
+
+
+@media all and (max-width: 600px){
+  .App-header img {
+    max-width: 50px;
+  }
+
+  .App-logo {
+    height: 40px;
+  }
+
+  .App-header h2 {
+    font-size: 1.1rem;
+    margin-top: 0;
+  }
+
+  .controls {
+    padding-top: 10px;
+  }
+
+  .controls > button {
+    bottom: 10px;
+  }
+
+  select{
+    margin-bottom: 1rem;
+  }
+
+
+}
