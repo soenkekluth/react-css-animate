@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {CSSAnimateGroup} from 'react-css-animate';
-import {easing} from 'react-css-animate';
+import {easeOutExpo} from 'react-css-animate/css-easing';
 
 
 export default class Main extends Component {
@@ -14,8 +14,6 @@ export default class Main extends Component {
     pageName: 'page',
     animateEnterClass: 'rotateInUpRight',
     animateLeaveClass: 'hinge'
-      // animateEnterClass: 'slideInUp',
-    // animateLeaveClass: 'zoomOut'
   };
 
   render() {
@@ -29,7 +27,7 @@ export default class Main extends Component {
         animateEnterClass={this.props.animateEnterClass}
         animateEnterClass={this.props.animateEnterClass}
         animateEnterDuration="400ms"
-        animateEnterTiming={easing.easeOutExpo}
+        animateEnterTiming={easeOutExpo}
         animateEnterDelay="300ms"
         animateLeaveClass={this.props.animateLeaveClass}
         className="main-content">
