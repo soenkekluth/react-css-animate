@@ -1,4 +1,6 @@
-import prefixAll from 'inline-style-prefix-all';
+import Prefixer from 'inline-style-prefixer';
+
+var prefixer = null;
 
 const animationEventTypes = {
   'WebkitAnimation': {
@@ -41,9 +43,10 @@ class AnimationUtils {
   init() {
     if(!this.initialized){
       if(typeof window !== 'undefined'){
+        prefixer = new Prefixer()
         this.initialized = true;
-        this.animationName = Object.keys(prefixAll({'animation': ''}))[0];
-        this.transitionName = Object.keys(prefixAll({'transition': ''}))[0];
+        this.animationName = Object.keys(prefixer.prefix({'animation': ''}))[0];
+        this.transitionName = Object.keys(prefixer.prefix({'transition': ''}))[0];
       }
     }
   }
@@ -57,8 +60,12 @@ class AnimationUtils {
     return transitionEndEventType[this.transitionName];
   }
 
-  prefix(style){
-    return prefixAll(style);
+  prefix(style) {
+    if(prefixer) {
+      return prefixer.prefix(style);
+    }
+    console.warn('no prefixer');
+    return style;
   }
 
   offAnimationEnd(element, listener) {

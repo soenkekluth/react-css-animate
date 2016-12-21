@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import CSSAnimationGroup from './lib/css-animate-group';
-import {easeOutExpo} from './lib/css-easing';
+import {CSSAnimateGroup} from 'react-css-animate';
+import {easing} from 'react-css-animate';
 
 
 export default class Main extends Component {
@@ -21,21 +21,22 @@ export default class Main extends Component {
   render() {
     return (
 
-      <CSSAnimationGroup
+      <CSSAnimateGroup
         ref="main"
         tagName="main"
         id="main"
         keepLeavePosition={true}
         animateEnterClass={this.props.animateEnterClass}
+        animateEnterClass={this.props.animateEnterClass}
         animateEnterDuration="400ms"
-        animateEnterTiming={easeOutExpo}
+        animateEnterTiming={easing.easeOutExpo}
         animateEnterDelay="300ms"
         animateLeaveClass={this.props.animateLeaveClass}
         className="main-content">
         {React.cloneElement(this.props.children, {
           key: this.props.pageName
         })}
-      </CSSAnimationGroup>
+      </CSSAnimateGroup>
 
 
     );

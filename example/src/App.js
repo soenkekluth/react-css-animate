@@ -7,7 +7,7 @@ import PageTwo from './PageTwo';
 import PageOne from './PageOne';
 
 import 'animate.css';
-import CSSAnimate from './lib/css-animate';
+
 
 import './App.css';
 class App extends Component {
@@ -55,17 +55,17 @@ class App extends Component {
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to CSSAnimate</h2>
+          <h2>Rect CSSAnimate</h2>
 
 
           <div className="controls">
           <button onClick={this.changePage.bind(this)}>change page</button>
 
           <div className="right">
-          <label htmlFor="animateEnter">animateEnter</label>
+          <label htmlFor="animateEnter">Page enter</label>
           <Select value={this.state.animateEnterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
 
-          <label htmlFor="animateLeave">animateLeave</label>
+          <label htmlFor="animateLeave">Page exit</label>
           <Select value={this.state.animateLeaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
           </div>
           </div>
@@ -83,9 +83,3 @@ class App extends Component {
 }
 
 export default App;
-
-/*
-<CSSAnimate animateEnter={true} animateEnterDuration="2000ms">
-  <PageOne />
-</CSSAnimate>
- */

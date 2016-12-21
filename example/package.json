@@ -8,10 +8,8 @@
   "homepage": "./",
   "dependencies": {
     "animate.css": "^3.5.2",
-    "classnames": "^2.2.5",
-    "inline-style-prefix-all": "^2.0.2",
-    "object-assign": "^4.1.0",
     "react": "^15.4.1",
+    "react-css-animate": "^1.0.0",
     "react-dom": "^15.4.1"
   },
   "scripts": {

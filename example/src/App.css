@@ -26,6 +26,8 @@
 
 
 .page {
+  pointer-events: none;
+  user-select: none;
   padding: 2%;
   height: 100%;
 }
@@ -79,6 +81,8 @@
  }
 
  select {
+
+  font-size: 14px;
   margin-right: 1.5em;
  }
 

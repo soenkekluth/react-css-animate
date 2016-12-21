@@ -163,7 +163,7 @@ export default class CSSAnimate extends Component {
 
     const animating = this.state.animateEnter || this.state.animateLeave;
 
-    if (this.props.remove && !animating && !this.state.animateEnterComplete) {
+    if (this.props.remove && !animating && this.state.animateLeaveComplete) {
       return null;
     }
 
@@ -201,6 +201,7 @@ export default class CSSAnimate extends Component {
           style.position = 'absolute';
           style.width = '100%';
           style.top = '0';
+          style.zIndex = -100;
           style.left = '0';
         }
         if (this.props.animateLeaveDelay) {
