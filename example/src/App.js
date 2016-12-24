@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-
+import animations from './animations';
 import Main from './Main';
 import Select from './Select';
 import Page from './Page';
-import PageOne from './PageOne';
+
 
 import 'animate.css';
 import './Banderole.css';
+
+
+const hasAnimation = (animationName) => animations.indexOf(animationName) > -1;
 
 const pages = ['page-1', 'page-2', 'page-3', 'page-4', 'page-5'];
 var pagesIterator = 0;
@@ -15,19 +18,27 @@ var pagesIterator = 0;
 import './App.css';
 class App extends Component {
 
+  static contextTypes = {
+    router: React.PropTypes.object
+  };
+
   constructor(props, context) {
     super(props, context)
 
+    const params = context.router.params;
+    const animateEnterClass = (params && !!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : 'rotateInUpRight';
+    const animateLeaveClass = (params && !!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : 'hinge';
+
     this.state = {
       pageName: pages[pagesIterator],
-      animateEnterClass: 'rotateInUpRight',
-      animateLeaveClass: 'hinge'
+      animateEnterClass: animateEnterClass,
+      animateLeaveClass: animateLeaveClass
     }
   }
 
   onNextPage() {
     ++pagesIterator;
-    if(pagesIterator > pages.length-1){
+    if (pagesIterator > pages.length - 1) {
       pagesIterator = 0;
     }
     var pageName = pages[pagesIterator];
@@ -39,8 +50,8 @@ class App extends Component {
 
   onPrevPage() {
     --pagesIterator;
-    if(pagesIterator < 0){
-      pagesIterator = pages.length-1;
+    if (pagesIterator < 0) {
+      pagesIterator = pages.length - 1;
     }
     var pageName = pages[pagesIterator];
     this.setState({
@@ -50,20 +61,42 @@ class App extends Component {
   }
 
   onChangeAnimateEnter(e) {
-    this.setState({
-      animateEnterClass: e.nativeEvent.target.value
-    })
+
+    console.info('onChangeAnimateEnter');
+
+    const animateEnterClass = e.nativeEvent.target.value;
+    if (hasAnimation(animateEnterClass)) {
+      this.context.router.push('/' + animateEnterClass + '/' + this.state.animateLeaveClass);
+    }
+
   }
 
   onChangeAnimateLeave(e) {
-    this.setState({
-      animateLeaveClass: e.nativeEvent.target.value
-    })
+    console.info('onChangeAnimateLeave');
+
+    const animateLeaveClass = e.nativeEvent.target.value;
+    if (hasAnimation(animateLeaveClass)) {
+      this.context.router.push('/' + this.state.animateEnterClass + '/' + animateLeaveClass);
+    }
+
   }
 
 
-  render() {
+  componentWillReceiveProps(nextProps) {
+    const params = nextProps.router.params;
+    if (params) {
+      const animateEnterClass = (!!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : this.state.animateEnterClass;
+      const animateLeaveClass = (!!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : this.state.animateLeaveClass;
+      if (animateEnterClass !== this.state.animateEnterClass || animateLeaveClass !== this.state.animateLeaveClass) {
+        this.setState({
+          animateEnterClass: animateEnterClass,
+          animateLeaveClass: animateLeaveClass
+        })
+      }
+    }
+  }
 
+  render() {
 
     let page = null;
     const pageName = this.state.pageName.split('-')[1];
@@ -80,10 +113,9 @@ class App extends Component {
                         <h1>3</h1>
                       </div>)
         break;
-        default: break;
+      default:
+        break;
     }
-
-    // const page = this.state.pageName === 'page-1' ? <PageOne /> : <PageTwo />;
 
     return (
       <div className="App">
@@ -100,7 +132,7 @@ class App extends Component {
 
           <div className="right">
           <label htmlFor="animateEnter">Page enter</label>
-          <Select value={this.state.animateEnterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
+          <Select ref="animateEnterSelect" value={this.state.animateEnterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
 
           <label htmlFor="animateLeave">Page exit</label>
           <Select value={this.state.animateLeaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
@@ -112,8 +144,6 @@ class App extends Component {
           </span>
         </div>
 
-
-
         <Main pageName={this.state.pageName} animateEnterClass={this.state.animateEnterClass} animateLeaveClass={this.state.animateLeaveClass}>
           {page}
         </Main>
@@ -124,3 +154,13 @@ class App extends Component {
 }
 
 export default App;
+
+
+/*
+        {React.cloneElement(this.props.children, { children: page, pageName:this.state.pageName, animateEnterClass:this.state.animateEnterClass, animateLeaveClass:this.state.animateLeaveClass })}
+
+
+<Main pageName={this.state.pageName} animateEnterClass={this.state.animateEnterClass} animateLeaveClass={this.state.animateLeaveClass}>
+  {page}
+</Main>
+ */

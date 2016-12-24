@@ -9,7 +9,7 @@ export default class Page extends Component {
 
     return (
       <div className={cname} {...props} >
-        {this.props.children}
+        {children}
       </div>
     );
   }

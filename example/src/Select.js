@@ -5,7 +5,7 @@ export default class Select extends Component {
 
   render() {
 
-    const {id, onChange, value, ...props} = this.props;
+    const {id, onChange, value} = this.props;
 
 
     return (

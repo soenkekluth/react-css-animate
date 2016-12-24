@@ -191,9 +191,9 @@ export default class CSSAnimate extends Component {
         if (this.props.keepLeavePosition) {
           style.position = 'absolute';
           style.width = '100%';
-          style.top = '0';
+          // style.top = '0';
           style.zIndex = -100;
-          style.left = '0';
+          // style.left = '0';
         }
         if (this.props.animateLeaveDelay) {
           style.animationDelay = this.props.animateLeaveDelay;
@@ -255,9 +255,7 @@ export default class CSSAnimate extends Component {
 
 
   onAnimationEnd(e) {
-
-    console.log(this.refs.element.__proto__)
-
+    // console.log(this.refs.element.__proto__)
 
     const element = ReactDOM.findDOMNode(this.refs.element);
     var cb;

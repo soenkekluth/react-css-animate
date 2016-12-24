@@ -4,6 +4,7 @@ import {easeOutExpo} from '../lib/css-easing';
 
 
 export default class Main extends Component {
+
   static propTypes = {
     pageName: React.PropTypes.string,
     animateEnterClass: React.PropTypes.string,
@@ -24,7 +25,6 @@ export default class Main extends Component {
         tagName="main"
         id="main"
         keepLeavePosition={true}
-        animateEnterClass={this.props.animateEnterClass}
         animateEnterClass={this.props.animateEnterClass}
         animateEnterDuration="400ms"
         animateEnterTiming={easeOutExpo}
