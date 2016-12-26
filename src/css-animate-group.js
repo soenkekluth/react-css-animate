@@ -1,10 +1,10 @@
-import React, { Component, PropTypes } from 'react';
+import React, { PureComponent, PropTypes } from 'react';
 import classNames from 'classnames';
 import CSSAnimate from './css-animate';
 import ReactDOM from 'react-dom';
 
 
-export default class CSSAnimateGroup extends Component {
+export default class CSSAnimateGroup extends PureComponent {
 
   static propTypes = {
 
@@ -22,6 +22,7 @@ export default class CSSAnimateGroup extends Component {
     animateEnterDuration: PropTypes.string,
     animateEnterDelay: PropTypes.string,
     animateEnterTiming: PropTypes.string,
+    visibleBeforStart: PropTypes.bool,
 
     animateLeaveClass: PropTypes.string,
     animateLeaveDuration: PropTypes.string,
@@ -48,6 +49,7 @@ export default class CSSAnimateGroup extends Component {
   static defaultProps = {
     style: { position: 'relative' },
     tagName: 'div',
+    visibleBeforStart: false,
     autoHeight: true,
     keepLeavePosition: true,
     animateBaseClass: 'animated',
@@ -64,6 +66,12 @@ export default class CSSAnimateGroup extends Component {
       minHeight: 0
     };
 
+    this.onAnimateLeaveStart = this.onAnimateLeaveStart.bind(this);
+    this.onAnimateLeaveEnd = this.onAnimateLeaveEnd.bind(this);
+    this.onAnimateEnterEnd = this.onAnimateEnterEnd.bind(this);
+    this.onAnimateEnterStart = this.onAnimateEnterStart.bind(this);
+    this.onAnimateEnterEnd = this.onAnimateEnterEnd.bind(this);
+
     this.animatEnter = false;
     this.animatLeave = false;
   }
@@ -71,7 +79,8 @@ export default class CSSAnimateGroup extends Component {
 
 
   shouldComponentUpdate(nextProps, nextState) {
-    return ((nextProps.children.key !== this.props.children.key) || nextState.animating !== this.state.animating);
+    // return (nextState.animating !== this.state.animating);
+    return ((nextProps.children.key !== this.props.children.key) || (nextState.animating !== this.state.animating));
   }
 
 
@@ -137,21 +146,36 @@ export default class CSSAnimateGroup extends Component {
     }
   }
 
-  renderChildren() {
-    const { tagName, autoHeight, onAnimateLeaveStart, onAnimateEnterStart, onAnimateLeaveEnd, onAnimateEnterEnd, id, className, ...props } = this.props;
-
+  renderLastChild() {
     if (this.lastChildren && this.lastChildren.key !== this.props.children.key) {
-      return [
-        <CSSAnimate ref="last" key={this.lastChildren.key} animateEnter={false} animateLeave={true} remove={true} keepLeavePosition={this.props.keepLeavePosition}  onAnimateLeaveStart={this.onAnimateLeaveStart.bind(this)} onAnimateLeaveEnd={this.onAnimateLeaveEnd.bind(this)} {...props}>{this.lastChildren}</CSSAnimate>,
-        <CSSAnimate ref="current" key={this.props.children.key} animateLeave={false} animateEnter={true} onAnimateEnterStart={this.onAnimateEnterStart.bind(this)} onAnimateEnterEnd={this.onAnimateEnterEnd.bind(this)} {...props}>{this.props.children}</CSSAnimate>
-      ];
+      const { tagName, id, className, children, style, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay,  onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd,  ...props } = this.props;
+      // const { tagName, autoHeight, onAnimateLeaveStart, onAnimateEnterStart, onAnimateLeaveEnd, onAnimateEnterEnd, id, className, children, keepLeavePosition, ref, style, ...props } = this.props;
+      return <CSSAnimate ref="last" key={this.lastChildren.key} animateEnter={false} animateLeave={true} remove={true} onAnimateLeaveStart={this.onAnimateLeaveStart} onAnimateLeaveEnd={this.onAnimateLeaveEnd} {...props}>{this.lastChildren}</CSSAnimate>
     }
-    return <CSSAnimate ref="current" key={this.props.children.key} animateLeave={false} onAnimateEnterStart={this.onAnimateEnterStart.bind(this)} onAnimateEnterEnd={this.onAnimateEnterEnd.bind(this)} animateEnter={true} {...props}>{this.props.children}</CSSAnimate>
   }
+
+  renderCurrentChild() {
+      const { tagName, id, className, children, style, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
+    // const { tagName, autoHeight, onAnimateLeaveStart, onAnimateEnterStart, onAnimateLeaveEnd, onAnimateEnterEnd, id, className, ...props } = this.props;
+    return <CSSAnimate ref="current" key={children.key} visibleBeforStart={false} animateEnter={true} animateLeave={false} remove={true} onAnimateEnterStart={this.onAnimateEnterStart} onAnimateEnterEnd={this.onAnimateEnterEnd} {...props}>{children}</CSSAnimate>
+  }
+
+
+  // renderChildren() {
+  //   const { tagName, autoHeight, onAnimateLeaveStart, onAnimateEnterStart, onAnimateLeaveEnd, onAnimateEnterEnd, id, className, ...props } = this.props;
+
+  //   if (this.lastChildren && this.lastChildren.key !== this.props.children.key) {
+  //     return [
+  //       <CSSAnimate ref="last" key={this.lastChildren.key} animateEnter={false} animateLeave={true} remove={true} keepLeavePosition={this.props.keepLeavePosition}  onAnimateLeaveStart={this.onAnimateLeaveStart} onAnimateLeaveEnd={this.onAnimateLeaveEnd} {...props}>{this.lastChildren}</CSSAnimate>,
+  //       <CSSAnimate ref="current" key={this.props.children.key} animateLeave={false} animateEnter={true} onAnimateEnterStart={this.onAnimateEnterStart} onAnimateEnterEnd={this.onAnimateEnterEnd} {...props}>{this.props.children}</CSSAnimate>
+  //     ];
+  //   }
+  //   return <CSSAnimate ref="current" key={this.props.children.key} animateLeave={false} onAnimateEnterStart={this.onAnimateEnterStart} onAnimateEnterEnd={this.onAnimateEnterEnd} animateEnter={true} {...props}>{this.props.children}</CSSAnimate>
+  // }
 
   render() {
 
-    const { tagName, className, children, style, autoHeight, keepLeavePosition, animateBaseClass, animateAppearClass, animateAppearDuration, animateAppearDelay, animateEnterClass, animateEnterDuration, animateEnterDelay, animateEnterTiming, animateLeaveClass, animateLeaveDuration, animateLeaveDelay, animateLeaveTiming, onAnimationStart, onAnimationEnd, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
+    const { tagName, className, children, style, autoHeight, visibleBeforStart, keepLeavePosition, animateBaseClass, animateAppearClass, animateAppearDuration, animateAppearDelay, animateEnterClass, animateEnterDuration, animateEnterDelay, animateEnterTiming, animateLeaveClass, animateLeaveDuration, animateLeaveDelay, animateLeaveTiming, onAnimationStart, onAnimationEnd, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
     const Comp = tagName;
     const s = {...style };
 
@@ -162,7 +186,8 @@ export default class CSSAnimateGroup extends Component {
     const cname = classNames(className, 'css-animation-group');
     return (
       <Comp className={cname} {...props} style={s}>
-        { this.renderChildren() }
+        {this.renderLastChild()}
+        {this.renderCurrentChild()}
       </Comp>
     );
   }

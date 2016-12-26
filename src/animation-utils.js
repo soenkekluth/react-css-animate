@@ -78,7 +78,7 @@ class AnimationUtils {
   onAnimationEnd(element, listener) {
     var type = this.animationEventTypes.end;
     if (type && element.addEventListener) {
-      return element.addEventListener(type, listener, false);
+      return element.addEventListener(type, listener, true);
     }
   }
 
@@ -92,7 +92,7 @@ class AnimationUtils {
   onAnimationStart(element, listener) {
     var type = this.animationEventTypes.start;
     if (type && element.addEventListener) {
-      return element.addEventListener(type, listener, false);
+      return element.addEventListener(type, listener, true);
     }
   }
 
@@ -106,7 +106,7 @@ class AnimationUtils {
   onTransitionEnd(element, listener) {
     var type = this.transitionEndEventType;
     if (type && element.addEventListener) {
-      return element.addEventListener(type, listener, false);
+      return element.addEventListener(type, listener, true);
     }
   }
 
