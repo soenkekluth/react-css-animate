@@ -1,6 +1,6 @@
 {
   "name": "react-css-animate",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "react css animations",
   "main": "lib/index.js",
   "scripts": {
