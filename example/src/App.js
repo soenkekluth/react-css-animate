@@ -6,6 +6,11 @@ import Select from './Select';
 import Page from './Page';
 
 
+import CSSAnimate from '../lib/css-animate';
+import {easeOutExpo} from '../lib/css-easing';
+
+
+
 import 'animate.css';
 import './Banderole.css';
 
@@ -62,7 +67,6 @@ class App extends Component {
 
   onChangeAnimateEnter(e) {
 
-    console.info('onChangeAnimateEnter');
 
     const animateEnterClass = e.nativeEvent.target.value;
     if (hasAnimation(animateEnterClass)) {
@@ -72,7 +76,7 @@ class App extends Component {
   }
 
   onChangeAnimateLeave(e) {
-    console.info('onChangeAnimateLeave');
+
 
     const animateLeaveClass = e.nativeEvent.target.value;
     if (hasAnimation(animateLeaveClass)) {
@@ -145,7 +149,6 @@ class App extends Component {
         <Main pageName={this.state.pageName} animateEnterClass={this.state.animateEnterClass} animateLeaveClass={this.state.animateLeaveClass}>
           {page}
         </Main>
-
       </div>
     );
   }
@@ -155,10 +158,5 @@ export default App;
 
 
 /*
-        {React.cloneElement(this.props.children, { children: page, pageName:this.state.pageName, animateEnterClass:this.state.animateEnterClass, animateLeaveClass:this.state.animateLeaveClass })}
 
-
-<Main pageName={this.state.pageName} animateEnterClass={this.state.animateEnterClass} animateLeaveClass={this.state.animateLeaveClass}>
-  {page}
-</Main>
  */

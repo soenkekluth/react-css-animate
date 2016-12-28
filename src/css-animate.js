@@ -1,4 +1,4 @@
-import React, { PureComponent, PropTypes } from 'react';
+import React, { PureComponent , Component, PropTypes } from 'react';
 import classNames from 'classnames';
 import AnimationUtils from './animation-utils';
 import ReactDOM from 'react-dom';
@@ -20,8 +20,9 @@ export default class CSSAnimate extends PureComponent {
 
     disabled: React.PropTypes.bool,
     remove: React.PropTypes.bool,
+    hideLeaveEnd: React.PropTypes.bool,
+    hideEnter: React.PropTypes.bool,
     hide: React.PropTypes.bool,
-    visibleBeforStart: React.PropTypes.bool,
 
     timeoutFallback: React.PropTypes.bool,
 
@@ -58,11 +59,12 @@ export default class CSSAnimate extends PureComponent {
     animateLeaveClass: 'fadeOut',
     animateEnter: false,
     animateLeave: false,
-    visibleBeforStart: true,
+    hide: false,
+    hideEnter: false,
+    hideLeaveEnd: false,
     keepLeavePosition: false,
     disabled: false,
     remove: false,
-    hide: false,
     timeoutFallback: false
   };
 
@@ -120,9 +122,13 @@ export default class CSSAnimate extends PureComponent {
   componentWillUpdate(nextProps, nextState) {
     const element = ReactDOM.findDOMNode(this.refs.element);
     if (nextProps.animateLeave && !this.props.animateLeave && !this.state.animateLeave) {
+      nextState.animateEnterEnd = false;
       nextState.animateLeaveEnd = false;
-      nextState.animateLeave = true;
       nextState.animateEnter = false;
+      nextState.animateLeave = true;
+      nextState.animateEnterStart = false;
+      nextState.animateLeaveStart = true;
+
       nextState.height = 0;
 
       this.addAnimationListener();
@@ -132,8 +138,12 @@ export default class CSSAnimate extends PureComponent {
       }
     } else if (nextProps.animateEnter && !this.props.animateEnter && !this.state.animateEnter) {
       nextState.animateEnterEnd = false;
+      nextState.animateLeaveEnd = false;
       nextState.animateEnter = true;
       nextState.animateLeave = false;
+      nextState.animateEnterStart = false;
+      nextState.animateLeaveStart = false;
+
 
       this.addAnimationListener();
 
@@ -157,7 +167,7 @@ export default class CSSAnimate extends PureComponent {
 
 
   removeAnimationListener() {
-    if(this.hasAnimationListener){
+    if (this.hasAnimationListener) {
       const element = ReactDOM.findDOMNode(this.refs.element);
       if (element) {
         AnimationUtils.offAnimationEnd(element, this.onAnimationEnd);
@@ -184,19 +194,21 @@ export default class CSSAnimate extends PureComponent {
 
   render() {
 
-    const animating = this.state.animateEnter || this.state.animateLeave;
+    const animating = true;//this.state.animateEnter || this.state.animateLeave;
 
-    if (this.props.remove && !animating && this.state.animateLeaveEnd) {
+    if (this.props.remove && this.state.animateLeaveEnd) {
       return null;
     }
 
-    let { className, ...props } = this.props;
-    let animationClass = null;
-    let animationEndClass = null;
-    let style = this.props.style ? assign({}, this.props.style) : {};
+    var { className, ...props } = this.props;
+    var animationClass = null;
+    var animationEndClass = null;
+    var style = this.props.style ? assign({}, this.props.style) : {};
+
+
 
     if (this.props.animateEnterClass === 'slideDown' /*&& animating || this.state.animateLeaveEnd*/ ) {
-      style.maxHeight = this.state.height
+      style.maxHeight = this.state.height;
     }
 
     if (animating) {
@@ -211,9 +223,10 @@ export default class CSSAnimate extends PureComponent {
       if (this.state.animateEnter) {
         if (this.props.animateEnterDelay) {
           style.animationDelay = this.props.animateEnterDelay;
-          if(!this.props.visibleBeforStart && !this.state.animateEnterStart){
-            style.visibility = 'hidden !important';
+          if ((this.props.hide || this.props.hideEnter) && !this.state.animateEnterStart) {
+            style.visibility = 'hidden';
           }
+
         }
         if (this.props.animateEnterDuration) {
           style.animationDuration = this.props.animateEnterDuration;
@@ -221,10 +234,10 @@ export default class CSSAnimate extends PureComponent {
         if (this.props.animateEnterTiming) {
           style.animationTimingFunction = this.props.animateEnterTiming;
         }
-      } else if(this.state.animateLeave){
+      } else if (this.state.animateLeave) {
         if (this.props.keepLeavePosition) {
           style.position = 'absolute';
-          style.width = this.state.width+'px';
+          style.width = this.state.width + 'px';
           // style.top = '0';
           // style.zIndex = -100;
           // style.left = '0';
@@ -241,18 +254,22 @@ export default class CSSAnimate extends PureComponent {
       }
 
       style = AnimationUtils.prefix(style);
-    }else{
-      if(this.props.animateEnterEndClass || this.props.animateLeaveEndClass){
+
+    } else {
+      if (this.props.animateEnterEndClass || this.props.animateLeaveEndClass) {
         animationEndClass = classNames({
           [this.props.animateEnterEndClass]: this.state.animateEnterEnd,
           [this.props.animateLeaveEndClass]: this.state.animateLeaveEnd
         })
       }
-
     }
 
-    // var visibleClass = (!animating && this.state.animateLeaveEnd && this.props.hide) ? 'is-hidden' : null;
-    // visibleClass = (animating || this.state.animateEnterEnd) ? 'is-showing' : visibleClass;
+
+    if ((this.props.hide || this.props.hideLeaveEnd) && this.state.animateLeaveEnd) {
+      style.visibility = 'hidden';
+    }
+
+
 
     className = classNames('css-animation', className, animationClass, animationEndClass);
 
@@ -309,12 +326,22 @@ export default class CSSAnimate extends PureComponent {
 
       if (e.animationName === this.props.animateEnterClass) {
         cb = this.props.onAnimateEnterEnd;
-        state.animateLeaveEnd = false;
+
         state.animateEnterEnd = true;
+        state.animateLeaveEnd = false;
+        state.animateEnter = false;
+        state.animateLeave = false;
+        state.animateLeaveStart = false;
+        state.animateEnterStart = false;
+
       } else if (e.animationName === this.props.animateLeaveClass) {
         cb = this.props.onAnimateLeaveEnd;
-        state.animateLeaveEnd = true;
         state.animateEnterEnd = false;
+        state.animateLeaveEnd = true;
+        state.animateEnter = false;
+        state.animateLeave = false;
+        state.animateLeaveStart = false;
+        state.animateEnterStart = false;
       }
 
 
@@ -371,12 +398,22 @@ export default class CSSAnimate extends PureComponent {
 
       if (e.animationName === this.props.animateEnterClass) {
         this.setState({
-          animateEnterStart : true
+          animateEnterEnd: false,
+          animateLeaveEnd: false,
+          animateEnter: true,
+          animateLeave: false,
+          animateLeaveStart: false,
+          animateEnterStart: true
         })
         cb = this.props.onAnimateEnterStart;
       } else if (e.animationName === this.props.animateLeaveClass) {
         this.setState({
-          animateLeaveStart : true
+          animateEnterEnd: false,
+          animateLeaveEnd: false,
+          animateEnter: false,
+          animateLeave: true,
+          animateLeaveStart: true,
+          animateEnterStart: false
         })
         cb = this.props.onAnimateLeaveStart;
       }
