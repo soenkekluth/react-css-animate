@@ -24,6 +24,8 @@ export default class CSSAnimate extends PureComponent {
 
     animateBaseClass: React.PropTypes.string,
 
+    hiddenStyle: React.PropTypes.object,
+
     animateEnterClass: React.PropTypes.string,
     animateLeaveClass: React.PropTypes.string,
     animateEnterEndClass: React.PropTypes.string,
@@ -55,6 +57,7 @@ export default class CSSAnimate extends PureComponent {
     animateLeaveClass: 'fadeOut',
     animateEnterEndClass: null,
     animateLeaveEndClass: null,
+    hiddenStyle: {'visibility': 'hidden'},
     animateEnter: false,
     animateLeave: false,
     hide: false,
@@ -222,7 +225,8 @@ export default class CSSAnimate extends PureComponent {
         if (this.props.animateEnterDelay) {
           style.animationDelay = this.props.animateEnterDelay;
           if ((this.props.hide || this.props.hideEnter) && !this.state.animateEnterStart) {
-            style.visibility = 'hidden';
+            style = assign({},style, this.props.hiddenStyle) ;
+            // style.visibility = 'hidden';
           }
 
         }
@@ -250,24 +254,21 @@ export default class CSSAnimate extends PureComponent {
           style.animationTimingFunction = this.props.animateLeaveTiming;
         }
       }
-
       style = AnimationUtils.prefix(style);
 
     } else {
       if (this.props.animateEnterEndClass || this.props.animateLeaveEndClass) {
         animationEndClass = classNames({
-          [this.props.animateEnterEndClass]: this.state.animateEnterEnd,
-          [this.props.animateLeaveEndClass]: this.state.animateLeaveEnd
+          [this.props.animateEnterEndClass]: !!this.props.animateEnterEndClass && this.state.animateEnterEnd,
+          [this.props.animateLeaveEndClass]: !!this.props.animateLeaveEndClass && this.state.animateLeaveEnd
         })
       }
     }
 
 
     if ((this.props.hide || this.props.hideLeaveEnd) && this.state.animateLeaveEnd) {
-      style.visibility = 'hidden';
+     style = assign({},style, this.props.hiddenStyle) ;
     }
-
-
 
     className = classNames('css-animation', className, animationClass, animationEndClass);
 

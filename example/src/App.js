@@ -146,6 +146,7 @@ class App extends Component {
           </span>
         </div>
 
+
         <Main pageName={this.state.pageName} animateEnterClass={this.state.animateEnterClass} animateLeaveClass={this.state.animateLeaveClass}>
           {page}
         </Main>
@@ -158,5 +159,9 @@ export default App;
 
 
 /*
-
+<CSSAnimate hide animateLeave>
+<div className="page page-3" >
+    <h1>3</h1>
+  </div>
+  </CSSAnimate>
  */

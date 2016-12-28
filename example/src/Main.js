@@ -24,7 +24,8 @@ export default class Main extends Component {
         ref="main"
         tagName="main"
         id="main"
-        keepLeavePosition={true}
+        keepLeavePosition
+        hideEnter
         animateEnterClass={this.props.animateEnterClass}
         animateEnterDuration="400ms"
         animateEnterTiming={easeOutExpo}
