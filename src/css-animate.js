@@ -194,7 +194,7 @@ export default class CSSAnimate extends PureComponent {
 
   render() {
 
-    const animating = true;//this.state.animateEnter || this.state.animateLeave;
+    const animating = this.state.animateEnter || this.state.animateLeave;
 
     if (this.props.remove && this.state.animateLeaveEnd) {
       return null;
