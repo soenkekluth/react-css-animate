@@ -14,10 +14,6 @@ export default class CSSAnimate extends PureComponent {
     animateLeave: React.PropTypes.bool,
     keepLeavePosition: React.PropTypes.bool,
 
-
-    animateEnterLeave: React.PropTypes.bool,
-    animateLeaveEnter: React.PropTypes.bool,
-
     disabled: React.PropTypes.bool,
     remove: React.PropTypes.bool,
     hideLeaveEnd: React.PropTypes.bool,
@@ -57,6 +53,8 @@ export default class CSSAnimate extends PureComponent {
     animateBaseClass: 'animated',
     animateEnterClass: 'fadeIn',
     animateLeaveClass: 'fadeOut',
+    animateEnterEndClass: null,
+    animateLeaveEndClass: null,
     animateEnter: false,
     animateLeave: false,
     hide: false,
