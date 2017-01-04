@@ -7,7 +7,6 @@ import ReactDOM from 'react-dom';
 export default class CSSAnimateGroup extends PureComponent {
 
   static propTypes = {
-
     tagName: PropTypes.string,
 
     autoHeight: PropTypes.bool,
@@ -148,30 +147,15 @@ export default class CSSAnimateGroup extends PureComponent {
 
   renderLastChild() {
     if (this.lastChildren && this.lastChildren.key !== this.props.children.key) {
-      const { tagName, id, className, children, style, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay,  onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd,  ...props } = this.props;
-      // const { tagName, autoHeight, onAnimateLeaveStart, onAnimateEnterStart, onAnimateLeaveEnd, onAnimateEnterEnd, id, className, children, keepLeavePosition, ref, style, ...props } = this.props;
+      const { tagName, id, className, children, style, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd, ...props } = this.props;
       return <CSSAnimate ref="last" key={this.lastChildren.key} animateEnter={false} animateLeave={true} remove={true} onAnimateLeaveStart={this.onAnimateLeaveStart} onAnimateLeaveEnd={this.onAnimateLeaveEnd} {...props}>{this.lastChildren}</CSSAnimate>
     }
   }
 
   renderCurrentChild() {
-      const { tagName, id, className, children, style, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
-    // const { tagName, autoHeight, onAnimateLeaveStart, onAnimateEnterStart, onAnimateLeaveEnd, onAnimateEnterEnd, id, className, ...props } = this.props;
+    const { tagName, id, className, children, style, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
     return <CSSAnimate ref="current" key={children.key} hideEnter={true} animateEnter={true} animateLeave={false} remove={true} onAnimateEnterStart={this.onAnimateEnterStart} onAnimateEnterEnd={this.onAnimateEnterEnd} {...props}>{children}</CSSAnimate>
   }
-
-
-  // renderChildren() {
-  //   const { tagName, autoHeight, onAnimateLeaveStart, onAnimateEnterStart, onAnimateLeaveEnd, onAnimateEnterEnd, id, className, ...props } = this.props;
-
-  //   if (this.lastChildren && this.lastChildren.key !== this.props.children.key) {
-  //     return [
-  //       <CSSAnimate ref="last" key={this.lastChildren.key} animateEnter={false} animateLeave={true} remove={true} keepLeavePosition={this.props.keepLeavePosition}  onAnimateLeaveStart={this.onAnimateLeaveStart} onAnimateLeaveEnd={this.onAnimateLeaveEnd} {...props}>{this.lastChildren}</CSSAnimate>,
-  //       <CSSAnimate ref="current" key={this.props.children.key} animateLeave={false} animateEnter={true} onAnimateEnterStart={this.onAnimateEnterStart} onAnimateEnterEnd={this.onAnimateEnterEnd} {...props}>{this.props.children}</CSSAnimate>
-  //     ];
-  //   }
-  //   return <CSSAnimate ref="current" key={this.props.children.key} animateLeave={false} onAnimateEnterStart={this.onAnimateEnterStart} onAnimateEnterEnd={this.onAnimateEnterEnd} animateEnter={true} {...props}>{this.props.children}</CSSAnimate>
-  // }
 
   render() {
 
@@ -183,12 +167,17 @@ export default class CSSAnimateGroup extends PureComponent {
       s.minHeight = this.state.minHeight === null ? null : this.state.minHeight + 'px';
     }
 
-    const cname = classNames(className, 'css-animation-group');
-    return (
-      <Comp className={cname} {...props} style={s}>
-        {this.renderLastChild()}
-        {this.renderCurrentChild()}
-      </Comp>
+
+    return React.createElement(
+      tagName, {
+        ref :(element) => { this.element = element; },
+        className: classNames(className, 'css-animation-group'),
+        style: s,
+        ...props,
+      }, [
+        this.renderLastChild(),
+        this.renderCurrentChild()
+      ]
     );
   }
 

@@ -7,7 +7,6 @@ import assign from 'object-assign';
 export default class CSSAnimate extends PureComponent {
 
   static propTypes = {
-
     tagName: React.PropTypes.string,
 
     animateEnter: React.PropTypes.bool,
@@ -93,7 +92,7 @@ export default class CSSAnimate extends PureComponent {
   }
 
   animateEnter() {
-    const element = ReactDOM.findDOMNode(this.refs.element);
+    const element = ReactDOM.findDOMNode(this.element);
     var height = element ? element.scrollHeight : 0;
 
     this.setState({
@@ -105,7 +104,7 @@ export default class CSSAnimate extends PureComponent {
   }
 
   animateLeave() {
-    const element = ReactDOM.findDOMNode(this.refs.element);
+    const element = ReactDOM.findDOMNode(this.element);
     var width = element ? element.clientWidth : 0;
     this.setState({
       animateLeaveEnd: false,
@@ -121,7 +120,7 @@ export default class CSSAnimate extends PureComponent {
   // }
 
   componentWillUpdate(nextProps, nextState) {
-    const element = ReactDOM.findDOMNode(this.refs.element);
+    const element = ReactDOM.findDOMNode(this.element);
     if (nextProps.animateLeave && !this.props.animateLeave && !this.state.animateLeave) {
       nextState.animateEnterEnd = false;
       nextState.animateLeaveEnd = false;
@@ -157,7 +156,7 @@ export default class CSSAnimate extends PureComponent {
   addAnimationListener() {
 
     if (!this.hasAnimationListener) {
-      const element = ReactDOM.findDOMNode(this.refs.element);
+      const element = ReactDOM.findDOMNode(this.element);
       if (element) {
         AnimationUtils.onAnimationStart(element, this.onAnimationStart);
         AnimationUtils.onAnimationEnd(element, this.onAnimationEnd);
@@ -169,7 +168,7 @@ export default class CSSAnimate extends PureComponent {
 
   removeAnimationListener() {
     if (this.hasAnimationListener) {
-      const element = ReactDOM.findDOMNode(this.refs.element);
+      const element = ReactDOM.findDOMNode(this.element);
       if (element) {
         AnimationUtils.offAnimationEnd(element, this.onAnimationEnd);
         AnimationUtils.offAnimationStart(element, this.onAnimationStart);
@@ -265,7 +264,6 @@ export default class CSSAnimate extends PureComponent {
       }
     }
 
-
     if ((this.props.hide || this.props.hideLeaveEnd) && this.state.animateLeaveEnd) {
      style = assign({},style, this.props.hiddenStyle) ;
     }
@@ -275,11 +273,18 @@ export default class CSSAnimate extends PureComponent {
     let element = React.Children.only(this.props.children);
 
     if (!element || this.props.tagName) {
-      const Comp = this.props.tagName || 'div';
-      element = <Comp ref='element' style={style} className={className}>{this.props.children}</Comp>;
+      const type = this.props.tagName || 'div';
+      element = React.createElement(
+        type, {
+          ref:(element) => { this.element = element; },
+          className: className,
+          style: style,
+        },
+        this.props.children
+      );
+
     } else {
-      className = classNames(element.props.className, className);
-      element = React.cloneElement(element, { ref: 'element', className: className, style: style });
+      element = React.cloneElement(element, { ref: (element) => { this.element = element; }, className: classNames(element.props ? element.props.className : null, className), style: style });
     }
 
     return element;
@@ -305,11 +310,11 @@ export default class CSSAnimate extends PureComponent {
 
 
   onAnimationEnd(e) {
-    // console.log(this.refs.element.__proto__)
+    // console.log(this.element.__proto__)
 
     this.removeAnimationListener();
 
-    const element = ReactDOM.findDOMNode(this.refs.element);
+    const element = ReactDOM.findDOMNode(this.element);
     var cb;
 
     if (e.target === element) {
@@ -366,7 +371,7 @@ export default class CSSAnimate extends PureComponent {
 
   onAnimationStart(e) {
 
-    const element = ReactDOM.findDOMNode(this.refs.element);
+    const element = ReactDOM.findDOMNode(this.element);
     var cb;
     if (e.target === element) {
 
