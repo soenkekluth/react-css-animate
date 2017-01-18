@@ -52,6 +52,14 @@ class AnimationUtils {
   }
 
 
+  get isIE9(){
+    if(typeof document !== 'undefined'){
+      return document.documentMode <= 9;
+    }
+    return false;
+  }
+
+
   get animationEventTypes() {
     return animationEventTypes[this.animationName];
   }
