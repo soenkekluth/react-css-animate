@@ -32,13 +32,13 @@ class App extends Component {
     super(props, context)
 
     const params = context.router.params;
-    const animateEnterClass = (params && !!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : 'rotateInUpRight';
-    const animateLeaveClass = (params && !!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : 'hinge';
+    const enterClass = (params && !!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : 'rotateInUpRight';
+    const leaveClass = (params && !!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : 'hinge';
 
     this.state = {
       pageName: pages[pagesIterator],
-      animateEnterClass: animateEnterClass,
-      animateLeaveClass: animateLeaveClass
+      enterClass: enterClass,
+      leaveClass: leaveClass
     }
   }
 
@@ -69,9 +69,9 @@ class App extends Component {
   onChangeAnimateEnter(e) {
 
 
-    const animateEnterClass = e.nativeEvent.target.value;
-    if (hasAnimation(animateEnterClass)) {
-      this.context.router.push('/' + animateEnterClass + '/' + this.state.animateLeaveClass);
+    const enterClass = e.nativeEvent.target.value;
+    if (hasAnimation(enterClass)) {
+      this.context.router.push('/' + enterClass + '/' + this.state.leaveClass);
     }
 
   }
@@ -79,9 +79,9 @@ class App extends Component {
   onChangeAnimateLeave(e) {
 
 
-    const animateLeaveClass = e.nativeEvent.target.value;
-    if (hasAnimation(animateLeaveClass)) {
-      this.context.router.push('/' + this.state.animateEnterClass + '/' + animateLeaveClass);
+    const leaveClass = e.nativeEvent.target.value;
+    if (hasAnimation(leaveClass)) {
+      this.context.router.push('/' + this.state.enterClass + '/' + leaveClass);
     }
 
   }
@@ -90,12 +90,12 @@ class App extends Component {
   componentWillReceiveProps(nextProps) {
     const params = nextProps.router.params;
     if (params) {
-      const animateEnterClass = (!!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : this.state.animateEnterClass;
-      const animateLeaveClass = (!!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : this.state.animateLeaveClass;
-      if (animateEnterClass !== this.state.animateEnterClass || animateLeaveClass !== this.state.animateLeaveClass) {
+      const enterClass = (!!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : this.state.enterClass;
+      const leaveClass = (!!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : this.state.leaveClass;
+      if (enterClass !== this.state.enterClass || leaveClass !== this.state.leaveClass) {
         this.setState({
-          animateEnterClass: animateEnterClass,
-          animateLeaveClass: animateLeaveClass
+          enterClass: enterClass,
+          leaveClass: leaveClass
         })
       }
     }
@@ -141,17 +141,17 @@ class App extends Component {
         <div className="sidebar menu">
 
           <label htmlFor="animateEnter">Page enter</label>
-          <Select ref="animateEnterSelect" value={this.state.animateEnterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
+          <Select ref="animateEnterSelect" value={this.state.enterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
           <label htmlFor="animateEnterDurationSelect">duration</label>
           <TimeSelect ref="animateEnterDurationSelect" id="animateEnterDurationSelect"></TimeSelect>
 
           <label htmlFor="animateLeave">Page exit</label>
-          <Select value={this.state.animateLeaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
+          <Select value={this.state.leaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
 
         </div>
 
 
-        <Main pageName={this.state.pageName} animateEnterClass={this.state.animateEnterClass} animateLeaveClass={this.state.animateLeaveClass}>
+        <Main pageName={this.state.pageName} enterClass={this.state.enterClass} leaveClass={this.state.leaveClass}>
           {page}
         </Main>
       </div>

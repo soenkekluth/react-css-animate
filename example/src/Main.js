@@ -7,14 +7,14 @@ export default class Main extends Component {
 
   static propTypes = {
     pageName: React.PropTypes.string,
-    animateEnterClass: React.PropTypes.string,
-    animateLeaveClass: React.PropTypes.string
+    enterClass: React.PropTypes.string,
+    leaveClass: React.PropTypes.string
   };
 
   static defaultProps = {
     pageName: 'page',
-    animateEnterClass: 'rotateInUpRight',
-    animateLeaveClass: 'hinge'
+    enterClass: 'rotateInUpRight',
+    leaveClass: 'hinge'
   };
 
   render() {
@@ -26,11 +26,11 @@ export default class Main extends Component {
         id="main"
         keepLeavePosition
         hideEnter
-        animateEnterClass={this.props.animateEnterClass}
-        animateEnterDuration="400ms"
-        animateEnterTiming={easeOutExpo}
-        animateEnterDelay="300ms"
-        animateLeaveClass={this.props.animateLeaveClass}
+        enterClass={this.props.enterClass}
+        enterDuration="400ms"
+        enterTiming={easeOutExpo}
+        enterDelay="300ms"
+        leaveClass={this.props.leaveClass}
         className="main-content">
         {React.cloneElement(this.props.children, {
           key: this.props.pageName
