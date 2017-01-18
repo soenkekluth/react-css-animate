@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import animations from './animations';
 import Main from './Main';
 import Select from './Select';
+import TimeSelect from './TimeSelect';
 import Page from './Page';
 
 
@@ -127,23 +128,26 @@ class App extends Component {
           <img src={logo} className="App-logo" alt="logo" />
           <h2><span className="small">React</span> <span className="bold">CSSAnimate</span></h2>
           <div className="controls">
-          <div className="buttons">
-          <button onClick={this.onPrevPage.bind(this)}>prev Page</button>
-          <button onClick={this.onNextPage.bind(this)}>next Page</button>
+            <div className="buttons">
+            <button onClick={this.onPrevPage.bind(this)}>prev Page</button>
+            <button onClick={this.onNextPage.bind(this)}>next Page</button>
+            </div>
           </div>
-
-          <div className="right">
-          <label htmlFor="animateEnter">Page enter</label>
-          <Select ref="animateEnterSelect" value={this.state.animateEnterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
-
-          <label htmlFor="animateLeave">Page exit</label>
-          <Select value={this.state.animateLeaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
-          </div>
-          </div>
-
           <span className="banderole forkongithub">
             <a href="https://github.com/soenkekluth/react-css-animate">Fork me on GitHub</a>
           </span>
+        </div>
+
+        <div className="sidebar menu">
+
+          <label htmlFor="animateEnter">Page enter</label>
+          <Select ref="animateEnterSelect" value={this.state.animateEnterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
+          <label htmlFor="animateEnterDurationSelect">duration</label>
+          <TimeSelect ref="animateEnterDurationSelect" id="animateEnterDurationSelect"></TimeSelect>
+
+          <label htmlFor="animateLeave">Page exit</label>
+          <Select value={this.state.animateLeaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
+
         </div>
 
 

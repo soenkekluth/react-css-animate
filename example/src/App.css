@@ -20,7 +20,8 @@
 }
 
 .App-header h2 {
-  font-family: 'lane_-_narrowregular';
+  font-family: sans-serif;
+  font-weight: normal;
   font-size: 4rem;
   font-size: 4vw;
   letter-spacing: -2px;
@@ -234,4 +235,33 @@ select {
     padding-top: 1.2%;
     padding-bottom: 1.5%;
   }
+}
+
+
+.sidebar.menu {
+  transition: transform 200ms ease;
+
+  transform: translateX(85%);
+  color: white;
+  display: block;
+  position: absolute;
+  right: 0;
+  height: 100%;
+  background: #222;
+  width: 300px;
+  text-align: center;
+  z-index: 1000;
+
+
+}
+
+.sidebar.menu:focus,
+.sidebar.menu:hover {
+  transform: translateX(0);
+}
+
+
+.sidebar.menu label {
+  font-weight: bold;
+  display: block;
 }
