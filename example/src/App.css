@@ -265,3 +265,34 @@ select {
   font-weight: bold;
   display: block;
 }
+
+
+/*.animateEnterStart {
+  transform: translateX(100%);
+}
+*/
+
+/*.transition {
+  // transform: translateZ(0);
+  backface-visibility: hidden;
+  transform-style: preserve-3d;
+}*/
+
+
+.page {
+  transform: translateX(0);
+  transition: transform 4000ms ease;
+  /*transition: transform 4000ms ease;
+  opacity: 1;*/
+}
+
+.transitionIn {
+  transform: translateX(20%);
+
+}
+
+.transitionOut {
+  transition: transform 4000ms ease;
+  transform: translateX(-100%);
+  opacity: 1;
+}
