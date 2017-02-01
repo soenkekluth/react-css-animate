@@ -151,7 +151,7 @@ export default class CSSAnimate extends PureComponent {
 
   componentWillUpdate(nextProps, nextState) {
 
-    console.log(this.props.name, 'componentWillUpdate',nextProps, nextState);
+    // console.log(this.props.name, 'componentWillUpdate',nextProps, nextState);
 
     const element = ReactDOM.findDOMNode(this.element);
     if (nextProps.animateLeave && !this.props.animateLeave && !this.state.animateLeave) {
