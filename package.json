@@ -1,6 +1,6 @@
 {
   "name": "react-css-animate",
-  "version": "1.8.0",
+  "version": "1.9.0",
   "description": "react css animations",
   "main": "lib/index.js",
   "scripts": {
@@ -79,13 +79,7 @@
     "run-proxy": "1.0.1",
     "yarn-run-all": "3.1.1",
     "babel-plugin-external-helpers": "6.22.0",
-    "babelrc-rollup": "3.0.0",
-    "rollup": "0.41.4",
-    "rollup-plugin-babel": "2.7.1",
-    "rollup-plugin-babili": "1.1.1",
-    "rollup-plugin-commonjs": "7.0.0",
-    "rollup-plugin-node-resolve": "2.0.0",
-    "rollup-plugin-uglify": "1.0.1"
+    "rollup-plugin-babili": "1.1.1"
   },
   "dependencies": {
     "babel-runtime": "^6.22.0",
