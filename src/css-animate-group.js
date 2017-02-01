@@ -12,20 +12,20 @@ export default class CSSAnimateGroup extends PureComponent {
     animationType: React.PropTypes.string,
 
     autoHeight: PropTypes.bool,
-    keepLeavePosition: PropTypes.bool,
-    animateBaseClass: PropTypes.string,
+    leaveAbsolute: PropTypes.bool,
+    animateBaseName: PropTypes.string,
 
-    animateAppearClass: PropTypes.string,
+    animateAppearName: PropTypes.string,
     animateAppearDuration: PropTypes.string,
     animateAppearDelay: PropTypes.string,
 
-    animateEnterClass: PropTypes.string,
+    animateEnterName: PropTypes.string,
     animateEnterDuration: PropTypes.string,
     animateEnterDelay: PropTypes.string,
     animateEnterTiming: PropTypes.string,
     hideEnter: PropTypes.bool,
 
-    animateLeaveClass: PropTypes.string,
+    animateLeaveName: PropTypes.string,
     animateLeaveDuration: PropTypes.string,
     animateLeaveDelay: PropTypes.string,
     animateLeaveTiming: PropTypes.string,
@@ -53,11 +53,11 @@ export default class CSSAnimateGroup extends PureComponent {
     tagName: 'div',
     hideEnter: false,
     autoHeight: true,
-    keepLeavePosition: true,
-    animateBaseClass: 'animated',
-    animateAppearClass: 'fadeIn',
-    animateEnterClass: 'fadeIn',
-    animateLeaveClass: 'fadeOut'
+    leaveAbsolute: true,
+    animateBaseName: 'animated',
+    animateAppearName: 'fadeIn',
+    animateEnterName: 'fadeIn',
+    animateLeaveName: 'fadeOut'
   };
 
   constructor(props, context) {
@@ -150,19 +150,19 @@ export default class CSSAnimateGroup extends PureComponent {
 
   renderLastChild() {
     if (this.lastChildren && this.lastChildren.key !== this.props.children.key) {
-      const { tagName, id, className, children, style, animationType, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd, ...props } = this.props;
+      const { tagName, id, className, children, style, animationType, autoHeight, animateAppearName, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd, ...props } = this.props;
       return <CSSAnimate ref="last" key={this.lastChildren.key} animationType={animationType} animateEnter={false} animateLeave={true} remove={true} onAnimateLeaveStart={this.onAnimateLeaveStart} onAnimateLeaveEnd={this.onAnimateLeaveEnd} {...props}>{this.lastChildren}</CSSAnimate>
     }
   }
 
   renderCurrentChild() {
-    const { tagName, id, className, children, style, animationType, autoHeight, animateAppearClass, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
+    const { tagName, id, className, children, style, animationType, autoHeight, animateAppearName, animateAppearDuration, animateAppearDelay, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
     return <CSSAnimate ref="current" key={children.key} animationType={animationType} hideEnter={true} animateEnter={true} animateLeave={false} remove={false} onAnimateEnterStart={this.onAnimateEnterStart} onAnimateEnterEnd={this.onAnimateEnterEnd} {...props}>{children}</CSSAnimate>
   }
 
   render() {
 
-    const { tagName, className, children, style, autoHeight, animationType, hideEnter, keepLeavePosition, animateBaseClass, animateAppearClass, animateAppearDuration, animateAppearDelay, animateEnterClass, animateEnterDuration, animateEnterDelay, animateEnterTiming, animateLeaveClass, animateLeaveDuration, animateLeaveDelay, animateLeaveTiming, onAnimationStart, onAnimationEnd, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
+    const { tagName, className, children, style, autoHeight, animationType, hideEnter, leaveAbsolute, animateBaseName, animateAppearName, animateAppearDuration, animateAppearDelay, animateEnterName, animateEnterDuration, animateEnterDelay, animateEnterTiming, animateLeaveName, animateLeaveDuration, animateLeaveDelay, animateLeaveTiming, onAnimationStart, onAnimationEnd, onAnimateAppearStart, onAnimateAppearIteration, onAnimateAppearEnd, onAnimateEnterStart, onAnimateEnterIteration, onAnimateEnterEnd, onAnimateLeaveStart, onAnimateLeaveEnd, onAnimateLeaveIteration, ...props } = this.props;
     const Comp = tagName;
     const s = {...style };
 
@@ -193,9 +193,9 @@ export default class CSSAnimateGroup extends PureComponent {
   ref="main"
   tagName="main"
   id="main"
-  animateEnterClass="fadeIn"
+  animateEnterName="fadeIn"
   animateEnterDelay="190ms"
-  animateLeaveClass="zoomOut"
+  animateLeaveName="zoomOut"
   className="main-content">
   {React.cloneElement(this.props.children, {
     key: this.props.location.pathname

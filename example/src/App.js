@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import animations from './animations';
-import Main from './Main';
+import MainAnimation from './Main.animation';
+import MainTransition from './Main.transition';
 import Select from './Select';
 import TimeSelect from './TimeSelect';
 import Page from './Page';
@@ -24,6 +25,16 @@ var pagesIterator = 0;
 import './App.css';
 class App extends Component {
 
+  static propTypes= {
+    animationType: React.PropTypes.string,
+  };
+
+
+  static defaultProps = {
+    animationType: 'animation'
+  };
+
+
   static contextTypes = {
     router: React.PropTypes.object
   };
@@ -32,13 +43,13 @@ class App extends Component {
     super(props, context)
 
     const params = context.router.params;
-    const animateEnterClass = (params && !!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : 'rotateInUpRight';
-    const animateLeaveClass = (params && !!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : 'hinge';
+    const animateEnterName = (params && !!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : 'rotateInUpRight';
+    const animateLeaveName = (params && !!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : 'hinge';
 
     this.state = {
       pageName: pages[pagesIterator],
-      animateEnterClass: animateEnterClass,
-      animateLeaveClass: animateLeaveClass
+      animateEnterName: animateEnterName,
+      animateLeaveName: animateLeaveName
     }
   }
 
@@ -69,9 +80,9 @@ class App extends Component {
   onChangeAnimateEnter(e) {
 
 
-    const animateEnterClass = e.nativeEvent.target.value;
-    if (hasAnimation(animateEnterClass)) {
-      this.context.router.push('/' + animateEnterClass + '/' + this.state.animateLeaveClass);
+    const animateEnterName = e.nativeEvent.target.value;
+    if (hasAnimation(animateEnterName)) {
+      this.context.router.push('/' + animateEnterName + '/' + this.state.animateLeaveName);
     }
 
   }
@@ -79,9 +90,9 @@ class App extends Component {
   onChangeAnimateLeave(e) {
 
 
-    const animateLeaveClass = e.nativeEvent.target.value;
-    if (hasAnimation(animateLeaveClass)) {
-      this.context.router.push('/' + this.state.animateEnterClass + '/' + animateLeaveClass);
+    const animateLeaveName = e.nativeEvent.target.value;
+    if (hasAnimation(animateLeaveName)) {
+      this.context.router.push('/' + this.state.animateEnterName + '/' + animateLeaveName);
     }
 
   }
@@ -90,15 +101,31 @@ class App extends Component {
   componentWillReceiveProps(nextProps) {
     const params = nextProps.router.params;
     if (params) {
-      const animateEnterClass = (!!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : this.state.animateEnterClass;
-      const animateLeaveClass = (!!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : this.state.animateLeaveClass;
-      if (animateEnterClass !== this.state.animateEnterClass || animateLeaveClass !== this.state.animateLeaveClass) {
+      const animateEnterName = (!!params.animateEnter && hasAnimation(params.animateEnter)) ? params.animateEnter : this.state.animateEnterName;
+      const animateLeaveName = (!!params.animateLeave && hasAnimation(params.animateLeave)) ? params.animateLeave : this.state.animateLeaveName;
+      if (animateEnterName !== this.state.animateEnterName || animateLeaveName !== this.state.animateLeaveName) {
         this.setState({
-          animateEnterClass: animateEnterClass,
-          animateLeaveClass: animateLeaveClass
+          animateEnterName: animateEnterName,
+          animateLeaveName: animateLeaveName
         })
       }
     }
+  }
+
+
+  renderMain(page){
+
+    if(this.props.animationType === 'animation'){
+      return (<MainAnimation pageName={this.state.pageName} animateEnterName={this.state.animateEnterName} animateLeaveName={this.state.animateLeaveName}>
+                {page}
+              </MainAnimation>);
+    }
+
+    return (<MainTransition pageName={this.state.pageName}>
+              {page}
+            </MainTransition>);
+
+
   }
 
   render() {
@@ -141,19 +168,17 @@ class App extends Component {
         <div className="sidebar menu">
 
           <label htmlFor="animateEnter">Page enter</label>
-          <Select ref="animateEnterSelect" value={this.state.animateEnterClass} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
+          <Select ref="animateEnterSelect" value={this.state.animateEnterName} onChange={this.onChangeAnimateEnter.bind(this)} id="animateEnter"></Select>
           <label htmlFor="animateEnterDurationSelect">duration</label>
           <TimeSelect ref="animateEnterDurationSelect" id="animateEnterDurationSelect"></TimeSelect>
 
           <label htmlFor="animateLeave">Page exit</label>
-          <Select value={this.state.animateLeaveClass} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
+          <Select value={this.state.animateLeaveName} onChange={this.onChangeAnimateLeave.bind(this)} id="animateLeave"></Select>
 
         </div>
 
+        {this.renderMain(page)}
 
-        <Main pageName={this.state.pageName} animateEnterClass={this.state.animateEnterClass} animateLeaveClass={this.state.animateLeaveClass}>
-          {page}
-        </Main>
       </div>
     );
   }
