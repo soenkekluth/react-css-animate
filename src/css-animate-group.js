@@ -1,7 +1,8 @@
 import React, { PureComponent, PropTypes } from 'react';
-import classNames from 'classnames';
-import CSSAnimate from './css-animate';
 import ReactDOM from 'react-dom';
+import classNames from 'classnames';
+import createFragment from 'react-addons-create-fragment';
+import CSSAnimate from './css-animate';
 
 
 export default class CSSAnimateGroup extends PureComponent {
